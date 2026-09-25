@@ -1,0 +1,106 @@
+<section class="hero">
+  <div class="hero-content">
+    <h1>Deploy Bot Zako <span class="highlight">Kwa Sekunde Chache</span></h1>
+    <p class="hero-subtitle">
+      Hosting panel rahisi ya kuuza na kudeploy seva za bot (WhatsApp, Telegram, Discord n.k.)
+      kwa kutumia mfumo wa <strong>Sarafu (Coins)</strong>.
+    </p>
+    <div class="hero-buttons">
+      <% if (user) { %>
+        <a href="/deploy" class="btn btn-primary btn-lg">🚀 Anza Deploy</a>
+        <a href="/dashboard" class="btn btn-outline btn-lg">📊 Dashibodi</a>
+      <% } else { %>
+        <a href="/auth/register" class="btn btn-primary btn-lg">Jisajili Bure</a>
+        <a href="/auth/login" class="btn btn-outline btn-lg">Ingia</a>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<section class="stats-bar">
+  <div class="stat-card">
+    <div class="stat-value"><%= stats.totalServers %></div>
+    <div class="stat-label">Seva Zilizodeploy</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= stats.activeServers %></div>
+    <div class="stat-label">Zinafanya Kazi</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-value"><%= stats.totalUsers %></div>
+    <div class="stat-label">Watumiaji</div>
+  </div>
+</section>
+
+<section class="features">
+  <h2>Kwa Nini Uchague Sisi?</h2>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Deploy ya Haraka</h3>
+      <p>Bot yako inaanza kufanya kazi ndani ya sekunde 30.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">💰</div>
+      <h3>Bei Nafuu</h3>
+      <p>Lipa kwa Coins — <%= pricing.coinsPerMb %> coin kwa MB moja ya RAM.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Usalama</h3>
+      <p>Kila mtumiaji ana panel yake binafsi yenye usalama kamili.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🎁</div>
+      <h3>Bonus ya Kukaribisha</h3>
+      <p>Pata <strong><%= pricing.welcomeCoins %></strong> coins bure ukijiunga.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📱</div>
+      <h3>Bot Zote</h3>
+      <p>WhatsApp, Telegram, Discord, na Node.js yoyote.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛠️</div>
+      <h3>Msaada wa Muda Wote</h3>
+      <p>Tuko tayari kukusaidia muda wowote.</p>
+    </div>
+  </div>
+</section>
+
+<section class="pricing-preview">
+  <h2>Bei Zetu</h2>
+  <div class="pricing-cards">
+    <div class="pricing-card">
+      <div class="plan-name">Starter</div>
+      <div class="plan-price"><%= pricing.minRam %>MB</div>
+      <div class="plan-cost"><%= pricing.minRam * pricing.coinsPerMb %> coins</div>
+      <ul>
+        <li>RAM: <%= pricing.minRam %>MB</li>
+        <li>Disk: 1GB</li>
+        <li>CPU: 100%</li>
+      </ul>
+    </div>
+    <div class="pricing-card featured">
+      <div class="plan-badge">Maarufu</div>
+      <div class="plan-name">Standard</div>
+      <div class="plan-price">512MB</div>
+      <div class="plan-cost"><%= 512 * pricing.coinsPerMb %> coins</div>
+      <ul>
+        <li>RAM: 512MB</li>
+        <li>Disk: 2GB</li>
+        <li>CPU: 100%</li>
+      </ul>
+    </div>
+    <div class="pricing-card">
+      <div class="plan-name">Pro</div>
+      <div class="plan-price"><%= pricing.maxRam %>MB</div>
+      <div class="plan-cost"><%= pricing.maxRam * pricing.coinsPerMb %> coins</div>
+      <ul>
+        <li>RAM: <%= pricing.maxRam %>MB</li>
+        <li>Disk: 5GB</li>
+        <li>CPU: 200%</li>
+      </ul>
+    </div>
+  </div>
+</section>
