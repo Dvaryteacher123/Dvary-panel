@@ -1,0 +1,64 @@
+<section class="page-header">
+  <div>
+    <h1>🖥️ Seva Zangu</h1>
+    <p class="page-subtitle">Seva zote ulizodeploy (<%= servers.length %>)</p>
+  </div>
+  <div class="header-actions">
+    <a href="/deploy" class="btn btn-primary">🚀 Deploy Mpya</a>
+  </div>
+</section>
+
+<% if (servers && servers.length) { %>
+  <section class="servers-grid-full">
+    <% servers.forEach(function(server) { %>
+      <div class="server-card-full">
+        <div class="server-card-header">
+          <div>
+            <h3><%= server.name %></h3>
+            <span class="server-type"><%= server.botType %></span>
+          </div>
+          <span class="status-badge status-<%= server.status %>">
+            <%= server.status %>
+          </span>
+        </div>
+
+        <div class="server-card-body">
+          <div class="server-stat">
+            <span class="stat-icon-sm">💾</span>
+            <span><strong><%= server.ram %></strong> MB RAM</span>
+          </div>
+          <div class="server-stat">
+            <span class="stat-icon-sm">📀</span>
+            <span><strong><%= server.disk %></strong> MB Disk</span>
+          </div>
+          <div class="server-stat">
+            <span class="stat-icon-sm">💰</span>
+            <span><strong><%= server.coinsSpent %></strong> coins</span>
+          </div>
+          <div class="server-stat">
+            <span class="stat-icon-sm">📅</span>
+            <span><%= new Date(server.createdAt).toLocaleDateString('sw-TZ') %></span>
+          </div>
+        </div>
+
+        <div class="server-card-footer">
+          <a href="/dashboard/servers/<%= server._id %>" class="btn btn-sm btn-primary">
+            🎛️ Dhibiti
+          </a>
+          <a href="/dashboard/servers/<%= server._id %>/credentials" class="btn btn-sm btn-outline">
+            🔑 Login
+          </a>
+        </div>
+      </div>
+    <% }); %>
+  </section>
+<% } else { %>
+  <section class="content-card">
+    <div class="empty-state">
+      <div class="empty-icon">🚀</div>
+      <h3>Hauna seva bado</h3>
+      <p>Anza kwa kudeploy bot yako ya kwanza sasa!</p>
+      <a href="/deploy" class="btn btn-primary">Deploy Bot Mpya</a>
+    </div>
+  </section>
+<% } %>
