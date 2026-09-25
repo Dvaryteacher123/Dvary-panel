@@ -1,0 +1,82 @@
+<section class="page-header">
+  <div>
+    <h1><%= server.name %></h1>
+    <p class="page-subtitle">
+      Hali: <span class="status-badge status-<%= server.status %>"><%= server.status %></span>
+    </p>
+  </div>
+  <div class="header-actions">
+    <a href="/dashboard/servers" class="btn btn-outline">← Rudi</a>
+    <a href="/dashboard/servers/<%= server._id %>/credentials" class="btn btn-primary">🔑 Panel Login</a>
+  </div>
+</section>
+
+<!-- POWER CONTROLS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>⚡ Udhibiti wa Nguvu</h2>
+  </div>
+  <div class="power-controls">
+    <form action="/dashboard/servers/<%= server._id %>/power" method="POST" style="display:inline">
+      <input type="hidden" name="signal" value="start" />
+      <button class="btn btn-success">▶️ Anzisha</button>
+    </form>
+    <form action="/dashboard/servers/<%= server._id %>/power" method="POST" style="display:inline">
+      <input type="hidden" name="signal" value="restart" />
+      <button class="btn btn-warning">🔄 Rejesha</button>
+    </form>
+    <form action="/dashboard/servers/<%= server._id %>/power" method="POST" style="display:inline">
+      <input type="hidden" name="signal" value="stop" />
+      <button class="btn btn-outline">⏹️ Simamisha</button>
+    </form>
+    <form action="/dashboard/servers/<%= server._id %>/power" method="POST" style="display:inline">
+      <input type="hidden" name="signal" value="kill" />
+      <button class="btn btn-danger" onclick="return confirm('Una uhakika?')">💀 Kill</button>
+    </form>
+  </div>
+</section>
+
+<!-- INFO -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>📋 Taarifa za Seva</h2>
+  </div>
+  <div class="info-grid">
+    <div class="info-item"><strong>RAM:</strong> <%= server.ram %> MB</div>
+    <div class="info-item"><strong>Disk:</strong> <%= server.disk %> MB</div>
+    <div class="info-item"><strong>CPU:</strong> <%= server.cpu %>%</div>
+    <div class="info-item"><strong>Aina:</strong> <%= server.botType %></div>
+    <div class="info-item"><strong>Coins zilizotumika:</strong> <%= server.coinsSpent %></div>
+    <div class="info-item"><strong>Imeundwa:</strong> <%= new Date(server.createdAt).toLocaleString('sw-TZ') %></div>
+  </div>
+</section>
+
+<!-- RENAME -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>✏️ Badilisha Jina</h2>
+  </div>
+  <form action="/dashboard/servers/<%= server._id %>/rename" method="POST" class="inline-form">
+    <input type="text" name="newName" value="<%= server.name %>" required maxlength="60" />
+    <button type="submit" class="btn btn-primary">Hifadhi</button>
+  </form>
+</section>
+
+<!-- DANGER ZONE -->
+<section class="content-card danger-zone">
+  <div class="card-header">
+    <h2>⚠️ Kanda ya Hatari</h2>
+  </div>
+  <div class="danger-actions">
+    <form action="/dashboard/servers/<%= server._id %>/reinstall" method="POST" style="display:inline">
+      <button class="btn btn-warning" onclick="return confirm('Reinstall inagharimu 10 coins. Endelea?')">
+        🔄 Reinstall (10 coins)
+      </button>
+    </form>
+    <form action="/dashboard/servers/<%= server._id %>/delete" method="POST" style="display:inline">
+      <button class="btn btn-danger" onclick="return confirm('Una uhakika kufuta seva hii? Haiwezi kurudishwa!')">
+        🗑️ Futa Seva
+      </button>
+    </form>
+  </div>
+</section>
