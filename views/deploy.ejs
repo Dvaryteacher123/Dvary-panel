@@ -1,0 +1,147 @@
+<section class="page-header">
+  <div>
+    <h1>🚀 Deploy Bot Mpya</h1>
+    <p class="page-subtitle">Unda seva yako mpya kwa sekunde chache</p>
+  </div>
+  <div class="coins-display">
+    💰 Salio: <strong><%= user.coins %></strong> coins
+  </div>
+</section>
+
+<section class="content-card">
+  <form action="/deploy" method="POST" class="deploy-form" id="deployForm">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="serverName">Jina la Seva *</label>
+        <input
+          type="text"
+          id="serverName"
+          name="serverName"
+          placeholder="mfano: WhatsApp Bot Yangu"
+          required
+          maxlength="60"
+        />
+        <small>Jina litakaloonekana kwenye panel yako</small>
+      </div>
+
+      <div class="form-group">
+        <label for="botType">Aina ya Bot</label>
+        <select id="botType" name="botType">
+          <option value="whatsapp-bot">WhatsApp Bot</option>
+          <option value="telegram-bot">Telegram Bot</option>
+          <option value="discord-bot">Discord Bot</option>
+          <option value="nodejs-app">Node.js Application</option>
+          <option value="python-app">Python Application</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="ram">RAM (MB) *</label>
+      <input
+        type="range"
+        id="ramSlider"
+        min="<%= pricing.minRam %>"
+        max="<%= pricing.maxRam %>"
+        step="64"
+        value="512"
+      />
+      <div class="ram-input-group">
+        <input
+          type="number"
+          id="ram"
+          name="ram"
+          min="<%= pricing.minRam %>"
+          max="<%= pricing.maxRam %>"
+          step="64"
+          value="512"
+          required
+        />
+        <span class="ram-unit">MB</span>
+      </div>
+      <div class="ram-info">
+        <span>RAM: <strong id="ramDisplay">512</strong> MB</span>
+        <span>Gharama: <strong id="costDisplay"><%= 512 * pricing.coinsPerMb %></strong> coins</span>
+      </div>
+      <small>Min: <%= pricing.minRam %>MB | Max: <%= pricing.maxRam %>MB | 1MB = <%= pricing.coinsPerMb %> coin</small>
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Maelezo (hiari)</label>
+      <textarea
+        id="notes"
+        name="notes"
+        rows="3"
+        placeholder="Maelezo yoyote kuhusu bot yako..."
+      ></textarea>
+    </div>
+
+    <div class="alert alert-info">
+      <strong>ℹ️ Kumbuka:</strong> Baada ya ku-deploy, utapata username na password za kuingia kwenye panel ya Pterodactyl ili ku-upload code za bot yako.
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary btn-lg" id="submitBtn">
+        🚀 Deploy Sasa
+      </button>
+      <a href="/dashboard" class="btn btn-outline btn-lg">Ghairi</a>
+    </div>
+  </form>
+</section>
+
+<% if (userServers && userServers.length) { %>
+  <section class="content-card">
+    <div class="card-header">
+      <h2>🖥️ Seva Zako Zilizopo</h2>
+    </div>
+    <div class="servers-grid">
+      <% userServers.forEach(function(server) { %>
+        <div class="server-mini-card">
+          <div class="server-mini-header">
+            <strong><%= server.name %></strong>
+            <span class="status-badge status-<%= server.status %>"><%= server.status %></span>
+          </div>
+          <div class="server-mini-body">
+            <span>💾 <%= server.ram %>MB</span>
+            <span>📅 <%= new Date(server.createdAt).toLocaleDateString('sw-TZ') %></span>
+          </div>
+          <a href="/dashboard/servers/<%= server._id %>" class="btn btn-sm btn-outline">Fungua</a>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+<% } %>
+
+<script>
+  const slider = document.getElementById('ramSlider');
+  const ramInput = document.getElementById('ram');
+  const ramDisplay = document.getElementById('ramDisplay');
+  const costDisplay = document.getElementById('costDisplay');
+  const coinsPerMb = <%= pricing.coinsPerMb %>;
+  const userCoins = <%= user.coins %>;
+
+  function updateCost() {
+    const ram = parseInt(ramInput.value) || 0;
+    ramDisplay.textContent = ram;
+    costDisplay.textContent = ram * coinsPerMb;
+    slider.value = ram;
+    const cost = ram * coinsPerMb;
+    const btn = document.getElementById('submitBtn');
+    if (cost > userCoins) {
+      costDisplay.style.color = '#dc3545';
+      btn.disabled = true;
+      btn.textContent = '❌ Coins Hazitoshi';
+    } else {
+      costDisplay.style.color = '';
+      btn.disabled = false;
+      btn.textContent = '🚀 Deploy Sasa';
+    }
+  }
+
+  slider.addEventListener('input', () => {
+    ramInput.value = slider.value;
+    updateCost();
+  });
+  ramInput.addEventListener('input', updateCost);
+  updateCost();
+</script>
