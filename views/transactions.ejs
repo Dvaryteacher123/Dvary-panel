@@ -1,0 +1,59 @@
+<section class="page-header">
+  <div>
+    <h1>📜 Historia ya Coins</h1>
+    <p class="page-subtitle">Rekodi zote za coins zako</p>
+  </div>
+</section>
+
+<section class="content-card">
+  <% if (transactions && transactions.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tarehe</th>
+            <th>Aina</th>
+            <th>Kiasi</th>
+            <th>Salio</th>
+            <th>Sababu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% transactions.forEach(function(tx) { %>
+            <tr>
+              <td><%= new Date(tx.createdAt).toLocaleString('sw-TZ') %></td>
+              <td>
+                <% if (tx.type === 'credit') { %>
+                  <span class="badge badge-success">+ Imewekwa</span>
+                <% } else { %>
+                  <span class="badge badge-danger">− Imetumika</span>
+                <% } %>
+              </td>
+              <td class="<%= tx.type === 'credit' ? 'text-success' : 'text-danger' %>">
+                <strong><%= tx.type === 'credit' ? '+' : '-' %><%= tx.amount %></strong>
+              </td>
+              <td><%= tx.balanceAfter %></td>
+              <td><%= tx.reason %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <% if (pagination.totalPages > 1) { %>
+      <div class="pagination">
+        <% if (pagination.currentPage > 1) { %>
+          <a href="?page=<%= pagination.currentPage - 1 %>" class="btn btn-sm btn-outline">← Nyuma</a>
+        <% } %>
+        <span>Ukurasa <%= pagination.currentPage %> / <%= pagination.totalPages %></span>
+        <% if (pagination.currentPage < pagination.totalPages) { %>
+          <a href="?page=<%= pagination.currentPage + 1 %>" class="btn btn-sm btn-outline">Mbele →</a>
+        <% } %>
+      </div>
+    <% } %>
+  <% } else { %>
+    <div class="empty-state small">
+      <p>Hakuna transactions bado.</p>
+    </div>
+  <% } %>
+</section>
