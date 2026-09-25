@@ -1,0 +1,176 @@
+<section class="page-header">
+  <div>
+    <h1>👤 <%= userData.username %></h1>
+    <p class="page-subtitle"><%= userData.email %></p>
+  </div>
+  <div class="header-actions">
+    <a href="/admin/users" class="btn btn-outline">← Rudi</a>
+  </div>
+</section>
+
+<!-- STATS ZA MTUMIAJI -->
+<section class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">💰</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= userData.coins %></div>
+      <div class="stat-label">Coins</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🖥️</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= summary.panelCount %></div>
+      <div class="stat-label">Panels Zote</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">✅</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= summary.activeServers %></div>
+      <div class="stat-label">Zinafanya Kazi</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">💾</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= summary.totalRam %> MB</div>
+      <div class="stat-label">RAM Inayotumika</div>
+    </div>
+  </div>
+</section>
+
+<!-- TAARIFA -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>📋 Taarifa Binafsi</h2>
+  </div>
+  <div class="info-grid">
+    <div class="info-item"><strong>Username:</strong> <%= userData.username %></div>
+    <div class="info-item"><strong>Email:</strong> <%= userData.email %></div>
+    <div class="info-item"><strong>Cheo:</strong> <%= userData.role %></div>
+    <div class="info-item"><strong>Hali:</strong> <%= userData.isBanned ? '🚫 Banned' : '✅ Active' %></div>
+    <div class="info-item"><strong>Pterodactyl User ID:</strong> <%= userData.pterodactylUserId || '--' %></div>
+    <div class="info-item"><strong>Umejiunga:</strong> <%= new Date(userData.createdAt).toLocaleString('sw-TZ') %></div>
+    <div class="info-item"><strong>Login ya mwisho:</strong> <%= userData.lastLogin ? new Date(userData.lastLogin).toLocaleString('sw-TZ') : '--' %></div>
+  </div>
+</section>
+
+<!-- ONGEZA/PUNGUZA COINS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>💰 Ongeza / Punguza Coins</h2>
+  </div>
+  <form action="/admin/users/<%= userData._id %>/add-coins" method="POST" class="inline-form">
+    <input type="number" name="amount" placeholder="Kiasi (+ au -)" required />
+    <input type="text" name="reason" placeholder="Sababu (hiari)" />
+    <button type="submit" class="btn btn-primary">Weka</button>
+  </form>
+  <small>Weka namba chanya kuongeza (mfano: 100), namba hasi kupunguza (mfano: -50)</small>
+</section>
+
+<!-- VITENDO VYA USAJILI -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>⚙️ Vitendo vya Usajili</h2>
+  </div>
+  <div class="action-row">
+    <form action="/admin/users/<%= userData._id %>/toggle-ban" method="POST" style="display:inline">
+      <button class="btn <%= userData.isBanned ? 'btn-success' : 'btn-warning' %>" onclick="return confirm('Una uhakika?')">
+        <%= userData.isBanned ? '✅ Fungua (Unban)' : '🚫 Funga (Ban)' %>
+      </button>
+    </form>
+
+    <form action="/admin/users/<%= userData._id %>/toggle-admin" method="POST" style="display:inline">
+      <button class="btn btn-outline" onclick="return confirm('Badilisha cheo cha mtumiaji?')">
+        <%= userData.role === 'admin' ? '👤 Shusha kuwa User' : '👑 Pandisha kuwa Admin' %>
+      </button>
+    </form>
+
+    <form action="/admin/users/<%= userData._id %>/delete" method="POST" style="display:inline">
+      <button class="btn btn-danger" onclick="return confirm('FUTA mtumiaji huyu NA SEVA ZAKE ZOTE? Haiwezi kurudishwa!')">
+        🗑️ Futa Mtumiaji Kabisa
+      </button>
+    </form>
+  </div>
+</section>
+
+<!-- SEVA ZA MTUMIAJI -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>🖥️ Seva za Mtumiaji (<%= servers.length %>)</h2>
+  </div>
+
+  <% if (servers && servers.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Jina</th>
+            <th>RAM</th>
+            <th>Disk</th>
+            <th>Coins</th>
+            <th>Hali</th>
+            <th>Tarehe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% servers.forEach(function(s) { %>
+            <tr>
+              <td><strong><%= s.name %></strong></td>
+              <td><%= s.ram %> MB</td>
+              <td><%= s.disk %> MB</td>
+              <td><%= s.coinsSpent %></td>
+              <td><span class="status-badge status-<%= s.status %>"><%= s.status %></span></td>
+              <td><%= new Date(s.createdAt).toLocaleDateString('sw-TZ') %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state small"><p>Hauna seva.</p></div>
+  <% } %>
+</section>
+
+<!-- TRANSACTIONS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>📜 Transactions za Hivi Karibuni</h2>
+  </div>
+
+  <% if (transactions && transactions.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Tarehe</th>
+            <th>Aina</th>
+            <th>Kiasi</th>
+            <th>Salio</th>
+            <th>Sababu</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% transactions.forEach(function(tx) { %>
+            <tr>
+              <td><%= new Date(tx.createdAt).toLocaleString('sw-TZ') %></td>
+              <td>
+                <% if (tx.type === 'credit') { %>
+                  <span class="badge badge-success">+ Imewekwa</span>
+                <% } else { %>
+                  <span class="badge badge-danger">− Imetumika</span>
+                <% } %>
+              </td>
+              <td><strong><%= tx.type === 'credit' ? '+' : '-' %><%= tx.amount %></strong></td>
+              <td><%= tx.balanceAfter %></td>
+              <td><%= tx.reason %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state small"><p>Hakuna transactions.</p></div>
+  <% } %>
+</section>
