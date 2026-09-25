@@ -1,0 +1,58 @@
+<section class="page-header">
+  <div>
+    <h1>⬆️ Boresha Seva</h1>
+    <p class="page-subtitle">Ongeza Disk kwenye seva yako iliyopo</p>
+  </div>
+  <div class="coins-display">
+    💰 Salio: <strong><%= currentCoins %></strong> coins
+  </div>
+</section>
+
+<% if (!userServers || userServers.length === 0) { %>
+  <section class="content-card">
+    <div class="empty-state">
+      <div class="empty-icon">🖥️</div>
+      <h3>Hauna seva bado</h3>
+      <p>Anza kwa kudeploy bot yako ya kwanza.</p>
+      <a href="/deploy" class="btn btn-primary">Deploy Bot Mpya</a>
+    </div>
+  </section>
+<% } else { %>
+  <section class="content-card">
+    <form action="/api/servers/upgrade-disk" method="POST" class="deploy-form">
+      <div class="form-group">
+        <label for="serverId">Chagua Seva *</label>
+        <select id="serverId" name="serverId" required>
+          <option value="">-- Chagua seva --</option>
+          <% userServers.forEach(function(server) { %>
+            <option value="<%= server._id %>">
+              <%= server.name %> (Disk: <%= server.disk %>MB | RAM: <%= server.ram %>MB)
+            </option>
+          <% }); %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="additionalDisk">Disk ya Kuongeza (MB) *</label>
+        <input
+          type="number"
+          id="additionalDisk"
+          name="additionalDisk"
+          min="128"
+          max="5120"
+          step="128"
+          value="512"
+          required
+        />
+        <small>Disk inagharimu nusu ya RAM kwa MB</small>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-lg">
+          ⬆️ Boresha Seva
+        </button>
+        <a href="/dashboard" class="btn btn-outline btn-lg">Ghairi</a>
+      </div>
+    </form>
+  </section>
+<% } %>
