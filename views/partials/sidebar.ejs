@@ -1,0 +1,63 @@
+<aside class="sidebar">
+  <div class="sidebar-user">
+    <div class="user-avatar">
+      <%= user.username.charAt(0).toUpperCase() %>
+    </div>
+    <div class="user-info">
+      <div class="user-name"><%= user.username %></div>
+      <div class="user-role">
+        <%= user.role === 'admin' ? '👑 Admin' : '👤 Mtumiaji' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-coins">
+    <div class="coins-label">Salio la Coins</div>
+    <div class="coins-value">💰 <%= user.coins || 0 %></div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="nav-section">MTUMIAJI</div>
+    <a href="/dashboard" class="<%= currentPath === '/dashboard' ? 'active' : '' %>">
+      <span class="nav-icon">📊</span> Dashibodi
+    </a>
+    <a href="/dashboard/servers" class="<%= currentPath === '/dashboard/servers' ? 'active' : '' %>">
+      <span class="nav-icon">🖥️</span> Seva Zangu
+    </a>
+    <a href="/deploy" class="<%= currentPath === '/deploy' ? 'active' : '' %>">
+      <span class="nav-icon">🚀</span> Deploy Mpya
+    </a>
+    <a href="/servers/buy" class="<%= currentPath === '/servers/buy' ? 'active' : '' %>">
+      <span class="nav-icon">💾</span> Nunua RAM
+    </a>
+    <a href="/servers/upgrade" class="<%= currentPath === '/servers/upgrade' ? 'active' : '' %>">
+      <span class="nav-icon">⬆️</span> Boresha Seva
+    </a>
+    <a href="/dashboard/transactions" class="<%= currentPath === '/dashboard/transactions' ? 'active' : '' %>">
+      <span class="nav-icon">📜</span> Historia ya Coins
+    </a>
+    <a href="/dashboard/profile" class="<%= currentPath === '/dashboard/profile' ? 'active' : '' %>">
+      <span class="nav-icon">👤</span> Wasifu
+    </a>
+
+    <% if (user.role === 'admin') { %>
+      <div class="nav-section">ADMIN</div>
+      <a href="/admin" class="<%= currentPath === '/admin' ? 'active' : '' %>">
+        <span class="nav-icon">⚙️</span> Dashibodi ya Admin
+      </a>
+      <a href="/admin/users" class="<%= currentPath.startsWith('/admin/users') ? 'active' : '' %>">
+        <span class="nav-icon">👥</span> Watumiaji
+      </a>
+      <a href="/admin/servers" class="<%= currentPath.startsWith('/admin/servers') ? 'active' : '' %>">
+        <span class="nav-icon">🗄️</span> Seva Zote
+      </a>
+      <a href="/admin/transactions" class="<%= currentPath === '/admin/transactions' ? 'active' : '' %>">
+        <span class="nav-icon">💳</span> Transactions Zote
+      </a>
+    <% } %>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="/auth/logout" class="btn btn-logout-full">🚪 Toka</a>
+  </div>
+</aside>
