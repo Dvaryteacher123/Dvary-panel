@@ -1,0 +1,119 @@
+<section class="page-header">
+  <div>
+    <h1>💾 Nunua RAM ya Ziada</h1>
+    <p class="page-subtitle">Ongeza RAM kwenye seva yako iliyopo</p>
+  </div>
+  <div class="coins-display">
+    💰 Salio: <strong><%= currentCoins %></strong> coins
+  </div>
+</section>
+
+<% if (!userServers || userServers.length === 0) { %>
+  <section class="content-card">
+    <div class="empty-state">
+      <div class="empty-icon">🖥️</div>
+      <h3>Hauna seva bado</h3>
+      <p>Anza kwa kudeploy bot yako ya kwanza kabla ya kununua RAM ya ziada.</p>
+      <a href="/deploy" class="btn btn-primary">Deploy Bot Mpya</a>
+    </div>
+  </section>
+<% } else { %>
+  <section class="content-card">
+    <form action="/api/servers/buy" method="POST" class="deploy-form" id="buyForm">
+      <div class="form-group">
+        <label for="serverId">Chagua Seva *</label>
+        <select id="serverId" name="serverId" required>
+          <option value="">-- Chagua seva --</option>
+          <% userServers.forEach(function(server) { %>
+            <option value="<%= server._id %>" data-current-ram="<%= server.ram %>">
+              <%= server.name %> (RAM ya sasa: <%= server.ram %>MB)
+            </option>
+          <% }); %>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="additionalRam">RAM ya Kuongeza (MB) *</label>
+        <input
+          type="number"
+          id="additionalRam"
+          name="additionalRam"
+          min="64"
+          max="2048"
+          step="64"
+          value="256"
+          required
+        />
+        <small>Min: 64MB | Max: 2048MB kwa mara moja</small>
+      </div>
+
+      <div class="cost-summary">
+        <div class="cost-row">
+          <span>RAM ya sasa:</span>
+          <strong id="currentRamDisplay">-- MB</strong>
+        </div>
+        <div class="cost-row">
+          <span>RAM ya kuongeza:</span>
+          <strong id="addingRamDisplay">256 MB</strong>
+        </div>
+        <div class="cost-row">
+          <span>RAM mpya:</span>
+          <strong id="newRamDisplay">-- MB</strong>
+        </div>
+        <div class="cost-row total">
+          <span>Gharama:</span>
+          <strong id="costDisplay"><%= 256 * pricing.coinsPerMb %> coins</strong>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary btn-lg" id="buyBtn">
+          💾 Nunua RAM
+        </button>
+        <a href="/dashboard" class="btn btn-outline btn-lg">Ghairi</a>
+      </div>
+    </form>
+  </section>
+<% } %>
+
+<script>
+  const serverSelect = document.getElementById('serverId');
+  const ramInput = document.getElementById('additionalRam');
+  const currentRamDisplay = document.getElementById('currentRamDisplay');
+  const addingRamDisplay = document.getElementById('addingRamDisplay');
+  const newRamDisplay = document.getElementById('newRamDisplay');
+  const costDisplay = document.getElementById('costDisplay');
+  const buyBtn = document.getElementById('buyBtn');
+  const coinsPerMb = <%= pricing.coinsPerMb %>;
+  const userCoins = <%= currentCoins %>;
+  const maxRam = <%= pricing.maxRam %>;
+
+  function updateSummary() {
+    const selectedOpt = serverSelect.options[serverSelect.selectedIndex];
+    const currentRam = parseInt(selectedOpt?.dataset?.currentRam || 0);
+    const addingRam = parseInt(ramInput.value) || 0;
+    const newRam = currentRam + addingRam;
+    const cost = addingRam * coinsPerMb;
+
+    currentRamDisplay.textContent = currentRam + ' MB';
+    addingRamDisplay.textContent = addingRam + ' MB';
+    newRamDisplay.textContent = newRam + ' MB';
+    costDisplay.textContent = cost + ' coins';
+
+    if (newRam > maxRam || cost > userCoins) {
+      costDisplay.style.color = '#dc3545';
+      buyBtn.disabled = true;
+      buyBtn.textContent = '❌ Haiwezekani';
+    } else {
+      costDisplay.style.color = '';
+      buyBtn.disabled = false;
+      buyBtn.textContent = '💾 Nunua RAM';
+    }
+  }
+
+  if (serverSelect && ramInput) {
+    serverSelect.addEventListener('change', updateSummary);
+    ramInput.addEventListener('input', updateSummary);
+    updateSummary();
+  }
+</script>
