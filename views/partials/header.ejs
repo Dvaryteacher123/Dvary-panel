@@ -1,0 +1,34 @@
+<header class="top-nav">
+  <div class="nav-brand">
+    <a href="/">
+      <span class="brand-icon">🤖</span>
+      <span class="brand-name"><%= process.env.SITE_NAME || 'BotHost' %></span>
+    </a>
+  </div>
+
+  <nav class="nav-links">
+    <a href="/">Nyumbani</a>
+    <a href="/pricing">Bei</a>
+    <a href="/terms">Masharti</a>
+
+    <% if (typeof user !== 'undefined' && user) { %>
+      <a href="/dashboard">Dashibodi</a>
+      <a href="/deploy">Deploy</a>
+      <a href="/servers/buy">Nunua RAM</a>
+      <% if (user.role === 'admin') { %>
+        <a href="/admin" class="admin-link">⚙️ Admin</a>
+      <% } %>
+
+      <div class="user-menu">
+        <span class="coins-badge" title="Coins zako">
+          💰 <%= user.coins || 0 %>
+        </span>
+        <span class="user-name"><%= user.username %></span>
+        <a href="/auth/logout" class="btn btn-logout">Toka</a>
+      </div>
+    <% } else { %>
+      <a href="/auth/login" class="btn btn-outline">Ingia</a>
+      <a href="/auth/register" class="btn btn-primary">Jisajili</a>
+    <% } %>
+  </nav>
+</header>
