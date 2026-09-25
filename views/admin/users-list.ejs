@@ -1,0 +1,83 @@
+<section class="page-header">
+  <div>
+    <h1>👥 Watumiaji Wote</h1>
+    <p class="page-subtitle">Jumla: <%= pagination.total %> watumiaji</p>
+  </div>
+</section>
+
+<section class="content-card">
+  <form action="/admin/users" method="GET" class="search-form">
+    <input type="text" name="search" placeholder="Tafuta kwa username au email..." value="<%= search %>" />
+    <button type="submit" class="btn btn-primary">🔍 Tafuta</button>
+    <% if (search) { %>
+      <a href="/admin/users" class="btn btn-outline">Safisha</a>
+    <% } %>
+  </form>
+
+  <% if (users && users.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Cheo</th>
+            <th>Coins</th>
+            <th>Panels</th>
+            <th>RAM</th>
+            <th>Hali</th>
+            <th>Vitendo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% users.forEach(function(u) { %>
+            <tr>
+              <td>
+                <strong><%= u.username %></strong>
+              </td>
+              <td><%= u.email %></td>
+              <td>
+                <% if (u.role === 'admin') { %>
+                  <span class="badge badge-warning">👑 Admin</span>
+                <% } else { %>
+                  <span class="badge badge-secondary">👤 User</span>
+                <% } %>
+              </td>
+              <td>💰 <%= u.coins %></td>
+              <td>
+                <span class="badge badge-info"><%= u.panelCount %> panels</span>
+              </td>
+              <td><%= u.totalRam %> MB</td>
+              <td>
+                <% if (u.isBanned) { %>
+                  <span class="badge badge-danger">🚫 Banned</span>
+                <% } else { %>
+                  <span class="badge badge-success">✅ Active</span>
+                <% } %>
+              </td>
+              <td>
+                <a href="/admin/users/<%= u._id %>" class="btn btn-sm btn-primary">Angalia</a>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+
+    <% if (pagination.totalPages > 1) { %>
+      <div class="pagination">
+        <% if (pagination.currentPage > 1) { %>
+          <a href="?page=<%= pagination.currentPage - 1 %><%= search ? '&search=' + search : '' %>" class="btn btn-sm btn-outline">← Nyuma</a>
+        <% } %>
+        <span>Ukurasa <%= pagination.currentPage %> / <%= pagination.totalPages %></span>
+        <% if (pagination.currentPage < pagination.totalPages) { %>
+          <a href="?page=<%= pagination.currentPage + 1 %><%= search ? '&search=' + search : '' %>" class="btn btn-sm btn-outline">Mbele →</a>
+        <% } %>
+      </div>
+    <% } %>
+  <% } else { %>
+    <div class="empty-state small">
+      <p>Hakuna watumiaji waliopatikana.</p>
+    </div>
+  <% } %>
+</section>
