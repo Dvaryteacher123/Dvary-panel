@@ -1,0 +1,183 @@
+<section class="page-header">
+  <div>
+    <h1>⚙️ Dashibodi ya Admin</h1>
+    <p class="page-subtitle">Muhtasari wa mfumo mzima</p>
+  </div>
+  <div class="header-actions">
+    <a href="/admin/users" class="btn btn-outline">👥 Watumiaji</a>
+    <a href="/admin/servers" class="btn btn-outline">🗄️ Seva</a>
+  </div>
+</section>
+
+<!-- STATS: WATUMIAJI -->
+<section class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">👥</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.totalUsers %></div>
+      <div class="stat-label">Watumiaji Wote</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">👑</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.totalAdmins %></div>
+      <div class="stat-label">Ma-admin</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🚫</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.bannedUsers %></div>
+      <div class="stat-label">Waliofungiwa</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">🆕</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.newUsersToday %></div>
+      <div class="stat-label">Wapya Leo</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS: SEVA -->
+<section class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">🖥️</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.totalServers %></div>
+      <div class="stat-label">Panels Zote</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">✅</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.activeServers %></div>
+      <div class="stat-label">Zinafanya Kazi</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">⏸️</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.suspendedServers %></div>
+      <div class="stat-label">Zilizosimamishwa</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon">💾</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.totalRamUsed %> MB</div>
+      <div class="stat-label">Jumla ya RAM</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS: COINS -->
+<section class="stats-grid">
+  <div class="stat-card highlight-green">
+    <div class="stat-icon">📥</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.coinsGiven %></div>
+      <div class="stat-label">Coins Zilizotolewa</div>
+    </div>
+  </div>
+  <div class="stat-card highlight-red">
+    <div class="stat-icon">📤</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.coinsSpent %></div>
+      <div class="stat-label">Coins Zilizotumika</div>
+    </div>
+  </div>
+</section>
+
+<!-- BROADCAST COINS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>📢 Tuma Coins kwa Watumiaji Wote</h2>
+  </div>
+  <form action="/admin/broadcast-coins" method="POST" class="inline-form">
+    <input type="number" name="amount" placeholder="Kiasi (mfano: 50)" min="1" required />
+    <input type="text" name="reason" placeholder="Sababu (hiari)" />
+    <button type="submit" class="btn btn-warning" onclick="return confirm('Tuma coins kwa WATUMIAJI WOTE?')">
+      📢 Tuma kwa Wote
+    </button>
+  </form>
+</section>
+
+<!-- TOP DEPLOYERS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>🏆 Watumiaji Wenye Panels Nyingi</h2>
+  </div>
+
+  <% if (topDeployers && topDeployers.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Mtumiaji</th>
+            <th>Email</th>
+            <th>Idadi ya Panels</th>
+            <th>Jumla ya RAM</th>
+            <th>Coins</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% topDeployers.forEach(function(u, i) { %>
+            <tr>
+              <td><strong>#<%= i + 1 %></strong></td>
+              <td><%= u.username %></td>
+              <td><%= u.email %></td>
+              <td><span class="badge badge-info"><%= u.serverCount %> panels</span></td>
+              <td><%= u.totalRam %> MB</td>
+              <td>💰 <%= u.coins %></td>
+              <td><a href="/admin/users/<%= u._id %>" class="btn btn-sm btn-outline">Angalia</a></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state small"><p>Hakuna data bado.</p></div>
+  <% } %>
+</section>
+
+<!-- RECENT SERVERS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>🆕 Seva za Hivi Karibuni</h2>
+    <a href="/admin/servers" class="btn btn-sm btn-outline">Ona Zote</a>
+  </div>
+
+  <% if (recentServers && recentServers.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Jina</th>
+            <th>Mmiliki</th>
+            <th>RAM</th>
+            <th>Hali</th>
+            <th>Tarehe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentServers.forEach(function(s) { %>
+            <tr>
+              <td><strong><%= s.name %></strong></td>
+              <td><%= s.user ? s.user.username : '--' %></td>
+              <td><%= s.ram %> MB</td>
+              <td><span class="status-badge status-<%= s.status %>"><%= s.status %></span></td>
+              <td><%= new Date(s.createdAt).toLocaleString('sw-TZ') %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state small"><p>Hakuna seva bado.</p></div>
+  <% } %>
+</section>
