@@ -1,0 +1,31 @@
+<section class="page-header">
+  <div>
+    <h1>👤 Wasifu Wangu</h1>
+    <p class="page-subtitle">Dhibiti taarifa zako binafsi</p>
+  </div>
+</section>
+
+<section class="content-card">
+  <form action="/dashboard/profile" method="POST" class="deploy-form">
+    <div class="form-group">
+      <label for="username">Jina la Mtumiaji</label>
+      <input type="text" id="username" name="username" value="<%= user.username %>" required minlength="3" maxlength="30" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Barua Pepe</label>
+      <input type="email" id="email" name="email" value="<%= user.email %>" required />
+    </div>
+
+    <div class="info-grid">
+      <div class="info-item"><strong>Cheo:</strong> <%= user.role %></div>
+      <div class="info-item"><strong>Coins:</strong> <%= user.coins %></div>
+      <div class="info-item"><strong>Umejiunga:</strong> <%= new Date(user.createdAt).toLocaleDateString('sw-TZ') %></div>
+      <div class="info-item"><strong>Login ya mwisho:</strong> <%= user.lastLogin ? new Date(user.lastLogin).toLocaleString('sw-TZ') : '--' %></div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">💾 Hifadhi Mabadiliko</button>
+    </div>
+  </form>
+</section>
