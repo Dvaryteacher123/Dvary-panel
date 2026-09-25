@@ -1,0 +1,23 @@
+<% if (typeof success_msg !== 'undefined' && success_msg && success_msg.length) { %>
+  <div class="alert alert-success">
+    <span class="alert-icon">✅</span>
+    <span class="alert-text"><%= success_msg %></span>
+    <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+  </div>
+<% } %>
+
+<% if (typeof error_msg !== 'undefined' && error_msg && error_msg.length) { %>
+  <div class="alert alert-error">
+    <span class="alert-icon">❌</span>
+    <span class="alert-text"><%= error_msg %></span>
+    <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+  </div>
+<% } %>
+
+<% if (typeof error !== 'undefined' && error && error.length) { %>
+  <div class="alert alert-error">
+    <span class="alert-icon">⚠️</span>
+    <span class="alert-text"><%= error %></span>
+    <button class="alert-close" onclick="this.parentElement.remove()">×</button>
+  </div>
+<% } %>
