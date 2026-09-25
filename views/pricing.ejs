@@ -1,0 +1,54 @@
+<section class="page-header">
+  <div>
+    <h1>💰 Bei Zetu</h1>
+    <p class="page-subtitle">Chagua mpango unaokufaa</p>
+  </div>
+</section>
+
+<section class="pricing-cards">
+  <div class="pricing-card">
+    <div class="plan-name">Starter</div>
+    <div class="plan-price"><%= pricing.minRam %>MB RAM</div>
+    <div class="plan-cost"><%= pricing.minRam * pricing.coinsPerMb %> coins</div>
+    <ul>
+      <li>RAM: <%= pricing.minRam %>MB</li>
+      <li>Disk: 1GB</li>
+      <li>CPU: 100%</li>
+      <li>1 Server</li>
+    </ul>
+    <a href="/deploy" class="btn btn-primary btn-block">Chagua</a>
+  </div>
+
+  <div class="pricing-card featured">
+    <div class="plan-badge">Maarufu</div>
+    <div class="plan-name">Standard</div>
+    <div class="plan-price">512MB RAM</div>
+    <div class="plan-cost"><%= 512 * pricing.coinsPerMb %> coins</div>
+    <ul>
+      <li>RAM: 512MB</li>
+      <li>Disk: 2GB</li>
+      <li>CPU: 100%</li>
+      <li>1 Server</li>
+    </ul>
+    <a href="/deploy" class="btn btn-primary btn-block">Chagua</a>
+  </div>
+
+  <div class="pricing-card">
+    <div class="plan-name">Pro</div>
+    <div class="plan-price"><%= pricing.maxRam %>MB RAM</div>
+    <div class="plan-cost"><%= pricing.maxRam * pricing.coinsPerMb %> coins</div>
+    <ul>
+      <li>RAM: <%= pricing.maxRam %>MB</li>
+      <li>Disk: 5GB</li>
+      <li>CPU: 200%</li>
+      <li>1 Server</li>
+    </ul>
+    <a href="/deploy" class="btn btn-primary btn-block">Chagua</a>
+  </div>
+</section>
+
+<section class="content-card" style="margin-top:2rem">
+  <div class="alert alert-info">
+    🎁 <strong>Bonus:</strong> Ukijiunga leo unapata <strong><%= pricing.welcomeCoins %></strong> coins bure!
+  </div>
+</section>
