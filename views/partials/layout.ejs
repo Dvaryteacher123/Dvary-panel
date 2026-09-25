@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof title !== 'undefined' ? title : 'Hosting Panel' %> | <%= process.env.SITE_NAME || 'BotHost' %></title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+</head>
+<body>
+  <%- include('header') %>
+
+  <div class="app-container">
+    <% if (typeof user !== 'undefined' && user) { %>
+      <%- include('sidebar') %>
+    <% } %>
+
+    <main class="main-content <%= (typeof user !== 'undefined' && user) ? '' : 'full-width' %>">
+      <%- include('flash') %>
+      <%- body %>
+    </main>
+  </div>
+
+  <%- include('footer') %>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>
