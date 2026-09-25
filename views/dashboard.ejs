@@ -1,0 +1,142 @@
+<section class="page-header">
+  <div>
+    <h1>Habari, <%= user.username %> 👋</h1>
+    <p class="page-subtitle">Hii ni dashibodi yako ya hosting panel</p>
+  </div>
+  <div class="header-actions">
+    <a href="/deploy" class="btn btn-primary">🚀 Deploy Bot Mpya</a>
+    <a href="/servers/buy" class="btn btn-outline">💾 Nunua RAM</a>
+  </div>
+</section>
+
+<!-- STATS CARDS -->
+<section class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon">💰</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.currentCoins %></div>
+      <div class="stat-label">Coins Zako</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">🖥️</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.totalServers %></div>
+      <div class="stat-label">Panels/Seva Zote</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">✅</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.activeServers %></div>
+      <div class="stat-label">Zinafanya Kazi</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-icon">💾</div>
+    <div class="stat-content">
+      <div class="stat-value"><%= stats.totalRamUsed %> MB</div>
+      <div class="stat-label">RAM Inayotumika</div>
+    </div>
+  </div>
+</section>
+
+<!-- RECENT SERVERS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>🖥️ Seva Zangu za Hivi Karibuni</h2>
+    <a href="/dashboard/servers" class="btn btn-sm btn-outline">Ona Zote</a>
+  </div>
+
+  <% if (recentServers && recentServers.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Jina</th>
+            <th>RAM</th>
+            <th>Hali</th>
+            <th>Imeundwa</th>
+            <th>Vitendo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentServers.forEach(function(server) { %>
+            <tr>
+              <td><strong><%= server.name %></strong></td>
+              <td><%= server.ram %> MB</td>
+              <td>
+                <span class="status-badge status-<%= server.status %>">
+                  <%= server.status %>
+                </span>
+              </td>
+              <td><%= new Date(server.createdAt).toLocaleDateString('sw-TZ') %></td>
+              <td>
+                <a href="/dashboard/servers/<%= server._id %>" class="btn btn-sm btn-primary">
+                  Fungua
+                </a>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state">
+      <div class="empty-icon">🚀</div>
+      <h3>Hauna seva bado</h3>
+      <p>Anza kwa kudeploy bot yako ya kwanza sasa!</p>
+      <a href="/deploy" class="btn btn-primary">Deploy Bot Mpya</a>
+    </div>
+  <% } %>
+</section>
+
+<!-- RECENT TRANSACTIONS -->
+<section class="content-card">
+  <div class="card-header">
+    <h2>📜 Historia ya Coins ya Hivi Karibuni</h2>
+    <a href="/dashboard/transactions" class="btn btn-sm btn-outline">Ona Zote</a>
+  </div>
+
+  <% if (recentTransactions && recentTransactions.length) { %>
+    <div class="table-responsive">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Aina</th>
+            <th>Kiasi</th>
+            <th>Sababu</th>
+            <th>Tarehe</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% recentTransactions.forEach(function(tx) { %>
+            <tr>
+              <td>
+                <% if (tx.type === 'credit') { %>
+                  <span class="badge badge-success">+ Imewekwa</span>
+                <% } else { %>
+                  <span class="badge badge-danger">− Imetumika</span>
+                <% } %>
+              </td>
+              <td>
+                <strong class="<%= tx.type === 'credit' ? 'text-success' : 'text-danger' %>">
+                  <%= tx.type === 'credit' ? '+' : '-' %><%= tx.amount %>
+                </strong>
+              </td>
+              <td><%= tx.reason %></td>
+              <td><%= new Date(tx.createdAt).toLocaleString('sw-TZ') %></td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  <% } else { %>
+    <div class="empty-state small">
+      <p>Hakuna transactions bado.</p>
+    </div>
+  <% } %>
+</section>
