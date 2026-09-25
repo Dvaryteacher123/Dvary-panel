@@ -1,0 +1,44 @@
+<section class="auth-page">
+  <div class="auth-card">
+    <div class="auth-header">
+      <div class="auth-icon">🔐</div>
+      <h1>Karibu Tena</h1>
+      <p>Ingia kwenye akaunti yako kuendelea</p>
+    </div>
+
+    <form action="/auth/login" method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="email">Barua Pepe</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          placeholder="mfano@email.com"
+          required
+          autocomplete="email"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Neno la Siri</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          placeholder="••••••••"
+          required
+          minlength="6"
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">
+        Ingia
+      </button>
+    </form>
+
+    <div class="auth-footer">
+      <p>Hauna akaunti? <a href="/auth/register">Jisajili hapa</a></p>
+    </div>
+  </div>
+</section>
